@@ -3,6 +3,7 @@ const suhu = document.getElementById("suhu");
 const cuaca = document.getElementById("cuaca");
 const content = document.getElementById("content");
 const kotak = document.getElementById("kotak");
+const loading = document.getElementById("loading");
 
 fetch(
   `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Jakarta?unitGroup=metric&key=RG3C38N9YUM9SLJNFAZX4NKKP&contentType=json`,
@@ -25,6 +26,9 @@ fetch(
 
 button.addEventListener("click", (e) => {
   e.preventDefault();
+  loading.style.display = "flex";
+  kotak.style.display = "none";
+  loading.previousElementSibling.style.display = "none";
   const input = document.querySelector("input");
   const cityName = input.value;
   fetch(
@@ -33,18 +37,25 @@ button.addEventListener("click", (e) => {
       method: "GET",
       headers: {},
     }
-  ).then((response) => {
+  )
+    .then((response) => {
       const data = response.json();
-      data.then((data) => {
-        kotak.style.display = "flex";
-        kotak.previousElementSibling.style.display = "none";
-        suhu.innerHTML = data.currentConditions.temp + "°C";
-        cuaca.innerHTML = data.currentConditions.conditions;
-      }).catch((err) => {
-        kotak.style.display = "none";
-        kotak.previousElementSibling.style.display = "block";
-      });
-    }).catch((err) => {
-        kotak.style.display = "none";
+      data
+        .then((data) => {
+          loading.style.display = "none";
+          kotak.style.display = "flex";
+          loading.previousElementSibling.style.display = "none";
+          suhu.innerHTML = data.currentConditions.temp + "°C";
+          cuaca.innerHTML = data.currentConditions.conditions;
+        })
+        .catch((err) => {
+        console.log("error")
+          loading.style.display = "none";
+          kotak.style.display = "none";
+          loading.previousElementSibling.style.display = "block";
+        });
+    })
+    .catch((err) => {
+      kotak.style.display = "none";
     });
 });
