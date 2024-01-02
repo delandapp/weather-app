@@ -4,6 +4,13 @@ const cuaca = document.getElementById("cuaca");
 const content = document.getElementById("content");
 const kotak = document.getElementById("kotak");
 const loading = document.getElementById("loading");
+const icon = document.getElementById("icon");
+
+const dataicon = {
+    rain: "fa-solid fa-cloud-showers-heavy text-white text-[7rem]",
+    clear: "fa-solid fa-cloud text-white text-[7rem]",
+    Overcast: "fa-solid fa-cloud-meatball text-white text-[7rem]"
+}
 
 fetch(
   `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Jakarta?unitGroup=metric&key=RG3C38N9YUM9SLJNFAZX4NKKP&contentType=json`,
@@ -15,6 +22,7 @@ fetch(
   .then((response) => {
     const data = response.json();
     data.then((data) => {
+      icon.setAttribute("class", dataicon[data.currentConditions.icon]);
       suhu.previousElementSibling.previousElementSibling.innerHTML = data.resolvedAddress;
       suhu.innerHTML = data.currentConditions.temp + "°C";
       cuaca.innerHTML = data.currentConditions.conditions;
@@ -43,7 +51,7 @@ button.addEventListener("click", (e) => {
       const data = response.json();
       data
         .then((data) => {
-            suhu.previousElementSibling.previousElementSibling.innerHTML = data.resolvedAddress;
+          suhu.previousElementSibling.previousElementSibling.innerHTML = data.resolvedAddress;
           loading.style.display = "none";
           kotak.style.display = "flex";
           loading.previousElementSibling.style.display = "none";
