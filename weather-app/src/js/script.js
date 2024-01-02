@@ -15,6 +15,7 @@ fetch(
   .then((response) => {
     const data = response.json();
     data.then((data) => {
+      suhu.previousElementSibling.previousElementSibling.innerHTML = data.resolvedAddress;
       suhu.innerHTML = data.currentConditions.temp + "°C";
       cuaca.innerHTML = data.currentConditions.conditions;
       content.style.display = "flex";
@@ -42,6 +43,7 @@ button.addEventListener("click", (e) => {
       const data = response.json();
       data
         .then((data) => {
+            suhu.previousElementSibling.previousElementSibling.innerHTML = data.resolvedAddress;
           loading.style.display = "none";
           kotak.style.display = "flex";
           loading.previousElementSibling.style.display = "none";
